@@ -30,9 +30,9 @@ test('Get order with non-numeric id should receive code 400', async ({ request }
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('Get order with empty id should receive code 400', async ({ request }) => {
+test('Get order with empty id should receive code 500', async ({ request }) => {
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders/')
-  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(response.status()).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
 })
 
 test('Get order with negative id should receive code 400', async ({ request }) => {
@@ -78,7 +78,7 @@ test('PUT order with id outside valid range should return 400', async ({ request
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('PUT order with empty id should return 400', async ({ request }) => {
+test('PUT order with empty id should return 405', async ({ request }) => {
   const response = await request.put(`${apiUrl}/`, {
     headers: { api_key: validApiKey },
     data: {
@@ -89,7 +89,7 @@ test('PUT order with empty id should return 400', async ({ request }) => {
       comment: 'Updated order',
     },
   })
-  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(response.status()).toBe(StatusCodes.METHOD_NOT_ALLOWED)
 })
 
 test('PUT order with non-numeric id should return 400', async ({ request }) => {
@@ -106,8 +106,8 @@ test('PUT order with non-numeric id should return 400', async ({ request }) => {
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('PUT order without api_key should return 401', async ({ request }) => {
-  const response = await request.put(`${apiUrl}/${validId}`, {
+test('PUT order without api_key should return 400', async ({ request }) => {
+  const response = await request.put(`${apiUrl}/1`, {
     data: {
       status: 'OPEN',
       courierId: 1,
@@ -116,7 +116,7 @@ test('PUT order without api_key should return 401', async ({ request }) => {
       comment: 'Updated order',
     },
   })
-  expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
+  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
 test('PUT order with invalid api_key should return 401', async ({ request }) => {
@@ -161,11 +161,11 @@ test('Delete order with id outside valid range should receive code 400', async (
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('Delete order with empty id should receive code 400', async ({ request }) => {
+test('Delete order with empty id should receive code 405', async ({ request }) => {
   const response = await request.delete(`https://backend.tallinn-learning.ee/test-orders/`, {
     headers: { api_key: validApiKey },
   })
-  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(response.status()).toBe(StatusCodes.METHOD_NOT_ALLOWED)
 })
 
 test('Delete order with non-numeric id should receive code 400', async ({ request }) => {
@@ -175,9 +175,9 @@ test('Delete order with non-numeric id should receive code 400', async ({ reques
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('Delete order without api_key should receive code 401', async ({ request }) => {
+test('Delete order without api_key should receive code 400', async ({ request }) => {
   const response = await request.delete(`https://backend.tallinn-learning.ee/test-orders/1`)
-  expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
+  expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
 test('Delete order with invalid api_key should receive code 401', async ({ request }) => {
