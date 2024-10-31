@@ -2,7 +2,8 @@
 
 ## ENDPOINTS AND METHODS TO TEST
 
-Чек лист для PUT /test-orders/{id}
+LINK TO CHECKLIST
+https://docs.google.com/document/d/1qF3gU9KU1C3U9i1sAdH1Q_0OG0o8z-8Tr4ZsQR_fMfQ/edit?usp=sharing
 
 
 
