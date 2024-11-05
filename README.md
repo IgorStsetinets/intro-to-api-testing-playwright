@@ -77,15 +77,15 @@
 ---------------------------------------------------------------------------------------------
 4 | Граничное значение возраста, loanPeriod: 12 | "income": >0, "debt": >-1, "age": 17, "employed": true, "loanAmount": >0, "loanPeriod": 12 | Код ответа 200;
 ---------------------------------------------------------------------------------------------
-5 | Проверка, что riskScore определен | "income": >0, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 3..36 | 
+5 | Проверка, что riskScore определен | "income": >0, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 3..36 | Поле riskScore присутствует в ответе
 ---------------------------------------------------------------------------------------------
-6 | Проверка, что riskLevel определен | "income": >0, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 3..36 |
+6 | Проверка, что riskLevel определен | "income": >0, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 3..36 | Поле riskLevel присутствует в ответе
 ---------------------------------------------------------------------------------------------
-7 | Проверка, что riskLevel = "High Risk" | "income": 100, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 3 |
+7 | Проверка, что riskLevel = "High Risk" | "income": 100, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 3 | riskLevel = "High Risk"
 ---------------------------------------------------------------------------------------------
-8 | Проверка, что riskLevel = "Medium Risk" | "income": 100, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 9 |
+8 | Проверка, что riskLevel = "Medium Risk" | "income": 100, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 9 | riskLevel = "Medium Risk"
 ---------------------------------------------------------------------------------------------
-9 | Проверка, что riskLevel = "Low Risk" | "income": 100, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 12 | 
+9 | Проверка, что riskLevel = "Low Risk" | "income": 100, "debt": >-1, "age": 17..90, "employed": true, "loanAmount": >0, "loanPeriod": 12 | riskLevel = "Low Risk"
 ---------------------------------------------------------------------------------------------
 10 | Отправка запроса без тела запроса | Пустое тело | Код ответа 400
 ---------------------------------------------------------------------------------------------
