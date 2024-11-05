@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { StatusCodes } from 'http-status-codes'
+import { OrderDto } from './dto/order-dto'
 
 const apiUrl = 'https://backend.tallinn-learning.ee/test-orders'
 const validApiKey = '1234567890123456'
@@ -185,4 +186,23 @@ test('Delete order with invalid api_key should receive code 401', async ({ reque
     headers: { api_key: 'invalidapikey' },
   })
   expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
+})
+
+test('post order with correct data should receive code 201', async ({ request }) => {
+  // Prepare request body
+  const requestBody = OrderDto.createOrderWithRandomData()
+  // Send a POST request to the server
+  const response = await request.post('https://backend.tallinn-learning.ee/test-orders', {
+    data: requestBody,
+  })
+
+  // Log the response status and body
+  console.log('response status:', response.status())
+  console.log('response body:', await response.json())
+  expect(response.status()).toBe(StatusCodes.OK)
+
+  const responseBody = await response.json()
+  expect.soft(responseBody.status).toBe('OPEN')
+  expect.soft(responseBody.courierId).toBeDefined()
+  expect.soft(responseBody.customerName).toBeDefined()
 })
