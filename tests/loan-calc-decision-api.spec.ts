@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { StatusCodes } from 'http-status-codes'
-import { LoanCalcDto } from './dto/LoanCalcDto'
+import { LoanCalcDto } from './dto/loan-calc-dto'
 
 test.describe('tests for POST/loan-calc/decision', () => {
   test('Send call with all valid data, should receive code 200', async ({ request }) => {
