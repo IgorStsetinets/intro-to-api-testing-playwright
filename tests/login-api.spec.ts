@@ -19,5 +19,8 @@ test.describe('Tallinn delivery API tests', () => {
       data: requestBody
     })
     expect (response.status()).toBe(401)
+    console.log('Username:', process.env.USER);
+    console.log('Password:', process.env.PASSWORD);
+
   })
 })
