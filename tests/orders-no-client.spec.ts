@@ -1,37 +1,41 @@
-// tests/orders-no-client.spec.ts
 import { expect, test } from '@playwright/test'
 import { OrderDto } from './dto/order-dto'
 import { LoginDto } from './dto/login-dto'
+import { StatusCodes } from 'http-status-codes'
 
-test('Создание заказа без использования API-клиента', async ({ request }) => {
-  // Авторизация
-  const loginResponse = await request.post('https://backend.tallinn-learning.ee/login/student', {
+const BaseUrl = 'https://backend.tallinn-learning.ee'
+const LoginEndPoint = '/login/student'
+const OrdersEndPoint = '/orders'
+
+test('Creating an order without using the API client', async ({ request }) => {
+  const loginResponse = await request.post(`${BaseUrl}${LoginEndPoint}`, {
     data: LoginDto.createLoginWithCorrectData(),
   })
-  expect(loginResponse.status()).toBe(200)
+  expect(loginResponse.status()).toBe(StatusCodes.OK)
 
   const token = (await loginResponse.text()).trim()
 
-  // Создание заказа
-  const orderResponse = await request.post('https://backend.tallinn-learning.ee/orders', {
+  const orderResponse = await request.post(`${BaseUrl}${OrdersEndPoint}`, {
     headers: { Authorization: `Bearer ${token}` },
     data: OrderDto.createOrderWithRandomData(),
   })
 
-  expect(orderResponse.status()).toBe(200)
+  expect(orderResponse.status()).toBe(StatusCodes.OK)
   const orderData = await orderResponse.json()
-  expect(orderData).toHaveProperty('id') // Проверка на наличие ID у заказа
+  expect(orderData).toHaveProperty('id')
 })
 
-test('Авторизация и получение заказа по ID без использования API-клиента', async ({ request }) => {
-  const loginResponse = await request.post('https://backend.tallinn-learning.ee/login/student', {
+test('Authorization and receiving an order by ID without using an API client', async ({
+  request,
+}) => {
+  const loginResponse = await request.post(`${BaseUrl}${LoginEndPoint}`, {
     data: LoginDto.createLoginWithCorrectData(),
   })
-  expect(loginResponse.status()).toBe(200)
+  expect(loginResponse.status()).toBe(StatusCodes.OK)
 
   const token = (await loginResponse.text()).trim()
 
-  const orderResponse = await request.post('https://backend.tallinn-learning.ee/orders', {
+  const orderResponse = await request.post(`${BaseUrl}${OrdersEndPoint}`, {
     headers: { Authorization: `Bearer ${token}` },
     data: OrderDto.createOrderWithRandomData(),
   })
@@ -39,27 +43,26 @@ test('Авторизация и получение заказа по ID без �
   const orderData = await orderResponse.json()
   const orderId = orderData.id
 
-  const getOrderResponse = await request.get(
-    `https://backend.tallinn-learning.ee/orders/${orderId}`,
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  )
+  const getOrderResponse = await request.get(`${BaseUrl}${OrdersEndPoint}/${orderId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
 
-  expect(getOrderResponse.status()).toBe(200)
+  expect(getOrderResponse.status()).toBe(StatusCodes.OK)
   const fetchedOrderData = await getOrderResponse.json()
   expect(fetchedOrderData.id).toBe(orderId)
 })
 
-test('Авторизация и удаление заказа по ID без использования API-клиента', async ({ request }) => {
-  const loginResponse = await request.post('https://backend.tallinn-learning.ee/login/student', {
+test('Authorization and deletion of an order by ID without using an API client', async ({
+  request,
+}) => {
+  const loginResponse = await request.post(`${BaseUrl}${LoginEndPoint}`, {
     data: LoginDto.createLoginWithCorrectData(),
   })
-  expect(loginResponse.status()).toBe(200)
+  expect(loginResponse.status()).toBe(StatusCodes.OK)
 
   const token = (await loginResponse.text()).trim()
 
-  const orderResponse = await request.post('https://backend.tallinn-learning.ee/orders', {
+  const orderResponse = await request.post(`${BaseUrl}${OrdersEndPoint}`, {
     headers: { Authorization: `Bearer ${token}` },
     data: OrderDto.createOrderWithRandomData(),
   })
@@ -67,11 +70,8 @@ test('Авторизация и удаление заказа по ID без и�
   const orderData = await orderResponse.json()
   const orderId = orderData.id
 
-  const deleteResponse = await request.delete(
-    `https://backend.tallinn-learning.ee/orders/${orderId}`,
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  )
-  expect(deleteResponse.status()).toBe(200)
+  const deleteResponse = await request.delete(`${BaseUrl}${OrdersEndPoint}/${orderId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  expect(deleteResponse.status()).toBe(StatusCodes.OK)
 })
